@@ -15,25 +15,23 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapGet("/", () => "Hello.! Welcome To  Method..!");
+var products = new List<Product>()
+{
+    new Product("Redmi Node7",20000),
+    new Product("Redmi Node10",22000)
+};
 
+app.MapGet("/products", () =>
+{
+    
+     return Results.Ok(products); //200
+});
 
-app.MapGet("/hello", () =>
-{
-
-     return Results.Content("<h1>Hello! World</h1>", "text/html"); //200
-});
-app.MapPost("/hello", () =>
-{
-    return Results.Created();//201
-});
-app.MapPut("/hello", () =>
-{
-    return Results.NoContent();  // 204
-});
-app.MapDelete("/hello", () =>
-{
-    return Results.NoContent();//204
-});
 
 app.Run();
+
+
+//DTO------------------!
+public record Product(string Name, decimal Price);
+
 

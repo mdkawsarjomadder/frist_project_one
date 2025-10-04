@@ -3,7 +3,7 @@ GET http://localhost:5149
 
 
 ###
-GET http://localhost:5149/hello
+GET http://localhost:5149/products
 
 ###
 POST http://localhost:5149/hello
