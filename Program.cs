@@ -34,7 +34,15 @@ app.MapGet("/api/categories", ( [FromQuery] string searchValue = "") =>
 // ---------------POST:/api/categories Create Category?-----------------------!
 app.MapPost("/api/categories", ([FromBody] Category categoryData) =>
 {
-  
+    if (string.IsNullOrEmpty(categoryData.Name))
+    {
+        return Results.BadRequest("Category Name is  Required and can not be empty.!");
+    }
+    if (categoryData.Name.Length > 2)
+        {
+             return Results.BadRequest("Category Name  is Must Be Alteast 2 Chareaters.!");
+        }
+
     var newCategory = new Category
     {   
         CategoryID = Guid.NewGuid(),
@@ -49,24 +57,42 @@ app.MapPost("/api/categories", ([FromBody] Category categoryData) =>
 });
 
 // ---------------PUT:/api/categories/{categoryId} Update Category?-----------------------!
-app.MapPut("/api/categories/{categoryId}", (Guid categoryId, [FromBody] Category categoryData) =>
+app.MapPut("/api/categories/{categoryId:guid}", (Guid categoryId, [FromBody] Category categoryData) =>
 {
+    if (categoryData == null)
+    {
+        return Results.BadRequest("Category Data is missing.!");
+    }
     var FoundCategory = categories.FirstOrDefault(category => category.CategoryID == categoryId);
 
     if (FoundCategory == null)
     {
         return Results.NotFound("Category with this id Not Update exist.!");
-     }
-
-    FoundCategory.Name = categoryData.Name;
-    FoundCategory.Description = categoryData.Description;
+     } 
+     
+    if (!string.IsNullOrEmpty(categoryData.Name))
+    {
+        if (categoryData.Name.Length >= 2)
+        {
+            FoundCategory.Name = categoryData.Name;
+        }
+        else
+        {
+             return Results.BadRequest("Category Name  is Must Be Alteast 2 Chareaters.!");
+        }
+    }
+    if (!string.IsNullOrWhiteSpace(categoryData.Description))
+    {
+        FoundCategory.Description = categoryData.Description;
+    }
+    
     return Results.NoContent(); //204
      
 });
 
 
  // ---------------DELETE:/api/categories/{categoryId} DELETE Category?-----------------------!
-app.MapDelete("/api/categories/{categoryId}", (Guid categoryId) =>
+app.MapDelete("/api/categories/{categoryId:guid}", (Guid categoryId) =>
 {
     var FoundCategory = categories.FirstOrDefault(category => category.CategoryID == categoryId);
 
@@ -89,7 +115,7 @@ public record class Category
 {
     public Guid CategoryID { get; set; }
     public string Name { get; set; }
-    public string? Description { get; set; }
+    public string Description { get; set; } = string.Empty;
     public DateTime CategoryAt { get; set; }
 };
 

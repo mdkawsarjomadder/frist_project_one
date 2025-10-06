@@ -3,7 +3,8 @@ GET http://localhost:5149
 
 
 ###
-GET http://localhost:5149/api/categories?searchValue=Laptop
+GET http://localhost:5149/api/categories
+# GET http://localhost:5149/api/categories?searchValue=Laptop
 
 ###
 POST http://localhost:5149/api/categories
@@ -12,18 +13,18 @@ Content-Type: application/json
 //top-button-space rakhte hbe---------!
 {
     "name":"Laptop lenovo",
-    "description":"My best Laptop hp Divices is Good.!"
-}
-
-
-###
-PUT http://localhost:5149/api/categories/0a902c95-d6e6-41e2-8224-6cdf25213111
-Content-Type: application/json
-
-{
-    "name":"Redmi Node 14Pro",
     "description":"Good Phone.!"
 }
 
+
 ###
-DELETE http://localhost:5149/api/categories/1205e934-8ae0-431f-be46-2d5601e5c037
+PUT http://localhost:5149/api/categories/3df06e39-6ee4-4f0e-9705-69c2449273d3
+Content-Type: application/json
+
+{
+    "name":"S",
+    "description":""
+}
+
+###
+DELETE http://localhost:5149/api/categories/7722ace7-f781-40a2-867c-d8d769e8fe59
