@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -18,48 +20,55 @@ List<Category> categories = new List<Category>();
 app.MapGet("/", () => "Hello.! Welcome To  Method..!");
 
 // ---------------GET:/api/categories read Category?-----------------------!
-app.MapGet("/api/categories", () =>
+app.MapGet("/api/categories", ( [FromQuery] string searchValue = "") =>
 {
 
+   
+    if (!string.IsNullOrEmpty(searchValue))
+    {
+        var searchValueCategories = categories.Where(c => c.Name.Contains(searchValue, StringComparison.OrdinalIgnoreCase)).ToList();
+        return Results.Ok(searchValueCategories);
+    }
     return Results.Ok(categories); //200
 });
 // ---------------POST:/api/categories Create Category?-----------------------!
-app.MapPost("/api/categories", () =>
+app.MapPost("/api/categories", ([FromBody] Category categoryData) =>
 {
-
+  
     var newCategory = new Category
-    {
-        // CategoryID = Guid.NewGuid(),
-        CategoryID = Guid.Parse("35d876f6-ba77-4f49-bf4a-913c27dbe87b"),
-        Name = "Laptop",
-        Description = "Laptop is my persion document. ",
-        CategoryAt = DateTime.UtcNow 
+    {   
+        CategoryID = Guid.NewGuid(),
+        Name = categoryData.Name,
+        Description = categoryData.Description,
+        CategoryAt = DateTime.UtcNow,
+
     };
     categories.Add(newCategory);
     return Results.Created($"/api/categories/{newCategory.CategoryID}",newCategory); //201
+   
 });
 
-// ---------------PUT:/api/categories Update Category?-----------------------!
-app.MapPut("/api/categories", () =>
+// ---------------PUT:/api/categories/{categoryId} Update Category?-----------------------!
+app.MapPut("/api/categories/{categoryId}", (Guid categoryId, [FromBody] Category categoryData) =>
 {
-    var FoundCategory = categories.FirstOrDefault(category => category.CategoryID == Guid.Parse("35d876f6-ba77-4f49-bf4a-913c27dbe87b"));
+    var FoundCategory = categories.FirstOrDefault(category => category.CategoryID == categoryId);
 
     if (FoundCategory == null)
     {
         return Results.NotFound("Category with this id Not Update exist.!");
      }
 
-    FoundCategory.Name = "Smart Phone";
-    FoundCategory.Description = "Smart Phone Is Nice Category.!";
+    FoundCategory.Name = categoryData.Name;
+    FoundCategory.Description = categoryData.Description;
     return Results.NoContent(); //204
      
 });
 
 
- // ---------------DELETE:/api/categories DELETE Category?-----------------------!
-app.MapDelete("/api/categories", () =>
+ // ---------------DELETE:/api/categories/{categoryId} DELETE Category?-----------------------!
+app.MapDelete("/api/categories/{categoryId}", (Guid categoryId) =>
 {
-    var FoundCategory = categories.FirstOrDefault(category => category.CategoryID == Guid.Parse("35d876f6-ba77-4f49-bf4a-913c27dbe87b"));
+    var FoundCategory = categories.FirstOrDefault(category => category.CategoryID == categoryId);
 
     if (FoundCategory == null)
     {
@@ -79,7 +88,7 @@ app.Run();
 public record class Category
 {
     public Guid CategoryID { get; set; }
-    public string? Name { get; set; }
+    public string Name { get; set; }
     public string? Description { get; set; }
     public DateTime CategoryAt { get; set; }
 };
