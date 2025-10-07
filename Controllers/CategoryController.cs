@@ -1,3 +1,4 @@
+using frist_project_one.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace frist_project_one.Controllers
@@ -12,18 +13,25 @@ namespace frist_project_one.Controllers
         [HttpGet]
         public IActionResult GetCategories([FromQuery] string searchValue = "")
         {
-            if (!string.IsNullOrEmpty(searchValue))
+            // if (!string.IsNullOrEmpty(searchValue))
+            // {
+            //     var searchValueCategories = categories.Where(c => c.Name.Contains(searchValue, StringComparison.OrdinalIgnoreCase)).ToList();
+            //     return Ok(searchValueCategories);
+            // }
+        var CategoryReadList = categories.Select(c => new CategoryReadDto
             {
-                var searchValueCategories = categories.Where(c => c.Name.Contains(searchValue, StringComparison.OrdinalIgnoreCase)).ToList();
-                return Ok(searchValueCategories);
-            }
-            return Ok(categories);
+                CategoryID = c.CategoryID,
+                Name = c.Name,
+                Description = c.Description,
+                CategoryAt = c.CategoryAt
+            });
+            return Ok(CategoryReadList);
         }//Get End
 
         //POST: /api/categories/ => Create A category
 
         [HttpPost]
-        public IActionResult PostCategory([FromBody] Category categoryData)
+        public IActionResult PostCategory([FromBody] CategoryCreateDtos categoryData)
         {
 
             if (string.IsNullOrEmpty(categoryData.Name))
@@ -44,12 +52,19 @@ namespace frist_project_one.Controllers
 
             };
             categories.Add(newCategory);
-            return Created($"/api/categories/{newCategory.CategoryID}", newCategory);
+            var CategoryReadDtoTwo = new CategoryReadDto
+            {
+                CategoryID = newCategory.CategoryID,
+                Name = newCategory.Name,
+                Description = newCategory.Description,
+                CategoryAt = newCategory.CategoryAt
+            };
+            return Created($"/api/categories/{newCategory.CategoryID}", CategoryReadDtoTwo);
         }//post end
 
         //PUT: /api/categories/{categoryId} => Create Update..!
         [HttpPut("{categoryId:guid}")]
-        public IActionResult PutCategory(Guid categoryId, [FromBody] Category categoryData)
+        public IActionResult PutCategory(Guid categoryId, [FromBody] CategoryUpdateDto categoryData)
         {
 
             if (categoryData == null)
