@@ -34,15 +34,6 @@ namespace frist_project_one.Controllers
         public IActionResult PostCategory([FromBody] CategoryCreateDtos categoryData)
         {
 
-            if (string.IsNullOrEmpty(categoryData.Name))
-            {
-                return BadRequest("Category Name is  Required and can not be empty.!");
-            }
-            if (categoryData.Name.Length < 2)
-            {
-                return BadRequest("Category Name  is Must Be Alteast 2 Chareaters.!");
-            }
-
             var newCategory = new Category
             {
                 CategoryID = Guid.NewGuid(),

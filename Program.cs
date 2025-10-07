@@ -3,7 +3,29 @@ using Microsoft.AspNetCore.Mvc;
 var builder = WebApplication.CreateBuilder(args);
 
 // add sevices   to the controller.........>>! step_1
+
 builder.Services.AddControllers();
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+   {
+        var errors = context.ModelState
+              .Where(e => e.Value != null && e.Value.Errors.Count() > 0)
+              .Select(e => new
+              {
+                  Field = e.Key,
+                  Errors = e.Value != null ? e.Value.Errors.Select(x => x
+                     .ErrorMessage).ToArray() : new string[0]
+              }).ToList();
+           
+       return new BadRequestObjectResult(new
+       {
+           Message = "Validation Failed.!",
+           Errors = errors
+       });
+   };
+});
+
 //Swagger_Server Setup:------------
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
