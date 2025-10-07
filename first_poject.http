@@ -12,19 +12,19 @@ Content-Type: application/json
 
 //top-button-space rakhte hbe---------!
 {
-    "name":"Laptop lenovo",
-    "description":"Good Phone.!"
+    "name":"iPhone 17",
+    "description":"iPhone is Best Phone.!"
 }
 
 
 ###
-PUT http://localhost:5149/api/categories/3df06e39-6ee4-4f0e-9705-69c2449273d3
+PUT http://localhost:5149/api/categories/991a2dd8-9d9f-487a-8125-d772ae03d270
 Content-Type: application/json
 
 {
-    "name":"S",
-    "description":""
+    "name":"Nokia",
+    "description":"Good Phone is Nokia..!"
 }
 
 ###
-DELETE http://localhost:5149/api/categories/7722ace7-f781-40a2-867c-d8d769e8fe59
+DELETE http://localhost:5149/api/categories/50d3339f-3058-48ed-bfbc-65f68dd161f3
