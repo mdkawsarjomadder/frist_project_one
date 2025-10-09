@@ -13,12 +13,12 @@ Content-Type: application/json
 //top-button-space rakhte hbe---------!
 {
     "name":"K sd fd",
-    "description":"iPhone is Best Phone.!"
+    "description":""
 }
 
 
 ###
-PUT http://localhost:5149/api/categories/a041bf66-6840-4f16-b19f-1882c83ed132
+PUT http://localhost:5149/api/categories/9a3c7c2e-f29e-4ad9-83e2-c10910d50ea1
 Content-Type: application/json
 
 {
@@ -27,4 +27,4 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:5149/api/categories/a041bf66-6840-4f16-b19f-1882c83ed132
+DELETE http://localhost:5149/api/categories/9a3c7c2e-f29e-4ad9-83e2-c10910d50ea1

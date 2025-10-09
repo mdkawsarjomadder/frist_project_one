@@ -13,19 +13,14 @@ namespace frist_project_one.Controllers
         [HttpGet]
         public IActionResult GetCategories([FromQuery] string searchValue = "")
         {
-            // if (!string.IsNullOrEmpty(searchValue))
-            // {
-            //     var searchValueCategories = categories.Where(c => c.Name.Contains(searchValue, StringComparison.OrdinalIgnoreCase)).ToList();
-            //     return Ok(searchValueCategories);
-            // }
         var CategoryReadList = categories.Select(c => new CategoryReadDto
             {
                 CategoryID = c.CategoryID,
                 Name = c.Name,
                 Description = c.Description,
                 CategoryAt = c.CategoryAt
-            });
-            return Ok(CategoryReadList);
+            }).ToList();
+            return Ok(ApiResponse<List<CategoryReadDto>>.SuccessResponse(CategoryReadList,200,"Categories returned Successfully"));
         }//Get End
 
         //POST: /api/categories/ => Create A category
@@ -50,42 +45,25 @@ namespace frist_project_one.Controllers
                 Description = newCategory.Description,
                 CategoryAt = newCategory.CategoryAt
             };
-            return Created($"/api/categories/{newCategory.CategoryID}", CategoryReadDtoTwo);
+            return Created($"/api/categories/{newCategory.CategoryID}", 
+            ApiResponse<CategoryReadDto>.SuccessResponse(CategoryReadDtoTwo,201,"Category create a Successfully")
+            );
         }//post end
 
         //PUT: /api/categories/{categoryId} => Create Update..!
         [HttpPut("{categoryId:guid}")]
         public IActionResult PutCategory(Guid categoryId, [FromBody] CategoryUpdateDto categoryData)
         {
-
-            if (categoryData == null)
-            {
-                return BadRequest("Category Data is missing.!");
-            }
             var FoundCategory = categories.FirstOrDefault(category => category.CategoryID == categoryId);
 
             if (FoundCategory == null)
             {
-                return NotFound("Category with this id Not Update exist.!");
+                return NotFound(ApiResponse<Object>.ErrorsResponse(new List<string> {"Category is not found With This ID."}, 400, "Validation Failde.!"));
             }
-
-            if (!string.IsNullOrEmpty(categoryData.Name))
-            {
-                if (categoryData.Name.Length >= 2)
-                {
-                    FoundCategory.Name = categoryData.Name;
-                }
-                else
-                {
-                    return BadRequest("Category Name  is Must Be Alteast 2 Chareaters.!");
-                }
-            }
-            if (!string.IsNullOrWhiteSpace(categoryData.Description))
-            {
+                FoundCategory.Name = categoryData.Name;
                 FoundCategory.Description = categoryData.Description;
-            }
 
-            return NoContent(); //204
+            return Ok(ApiResponse<object>.SuccessResponse(null,204,"Create a update successfully")); //204
 
         }//Put End
         
@@ -98,11 +76,12 @@ namespace frist_project_one.Controllers
 
     if (FoundCategory == null)
     {
-        return NotFound("Category with this id Not exist.!");
+     return NotFound(ApiResponse<Object>.ErrorsResponse(new List<string> {"Category is not found With This ID."}, 400, "Validation Failde.!"));
+
      }
   
      categories.Remove(FoundCategory);
-    return NoContent(); //204
+    return Ok(ApiResponse<object>.SuccessResponse(null, 204, "Category delete is a successfully.!")); //204
         }//Get End
 
         
