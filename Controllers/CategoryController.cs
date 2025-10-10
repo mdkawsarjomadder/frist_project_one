@@ -13,14 +13,35 @@ namespace frist_project_one.Controllers
         [HttpGet]
         public IActionResult GetCategories([FromQuery] string searchValue = "")
         {
-        var CategoryReadList = categories.Select(c => new CategoryReadDto
+            var CategoryReadList = categories.Select(c => new CategoryReadDto
             {
                 CategoryID = c.CategoryID,
                 Name = c.Name,
                 Description = c.Description,
                 CategoryAt = c.CategoryAt
             }).ToList();
-            return Ok(ApiResponse<List<CategoryReadDto>>.SuccessResponse(CategoryReadList,200,"Categories returned Successfully"));
+            return Ok(ApiResponse<List<CategoryReadDto>>.SuccessResponse(CategoryReadList, 200, "Categories returned Successfully"));
+        }//Get End
+        
+           //GET: /api/categories/{categoryId} => read a category By Id.!
+
+        [HttpGet("{categoryId:guid}")]
+        public IActionResult GetCategoryById(Guid categoryID)
+        {
+            var FoundCategory = categories.FirstOrDefault(c => c.CategoryID == categoryID);
+            if (FoundCategory == null)
+    {
+     return NotFound(ApiResponse<Object>.ErrorsResponse(new List<string> {"Category is not found With This ID."}, 400, "Validation Failde.!"));
+
+     }
+         var CategoryReadDTO = new CategoryReadDto
+            {
+                CategoryID = FoundCategory.CategoryID,
+                Name = FoundCategory.Name,
+                Description = FoundCategory.Description,
+                CategoryAt = FoundCategory.CategoryAt
+            };
+            return Ok(ApiResponse<CategoryReadDto>.SuccessResponse(CategoryReadDTO,200,"Categories returned is Successfully"));
         }//Get End
 
         //POST: /api/categories/ => Create A category

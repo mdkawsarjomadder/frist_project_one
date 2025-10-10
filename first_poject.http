@@ -7,12 +7,16 @@ GET http://localhost:5149/api/categories
 # GET http://localhost:5149/api/categories?searchValue=Laptop
 
 ###
+GET http://localhost:5149/api/categories/49fdbccd-48f4-40c6-9bd5-6b6fd1d40bae
+
+
+###
 POST http://localhost:5149/api/categories/
 Content-Type: application/json
 
 //top-button-space rakhte hbe---------!
 {
-    "name":"K sd fd",
+    "name":"K ewyewrv",
     "description":""
 }
 
