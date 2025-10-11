@@ -7,7 +7,7 @@ GET http://localhost:5149/api/categories
 # GET http://localhost:5149/api/categories?searchValue=Laptop
 
 ###
-GET http://localhost:5149/api/categories/49fdbccd-48f4-40c6-9bd5-6b6fd1d40bae
+GET http://localhost:5149/api/categories/
 
 
 ###
@@ -16,13 +16,13 @@ Content-Type: application/json
 
 //top-button-space rakhte hbe---------!
 {
-    "name":"K ewyewrv",
+    "name":"K ertituoer",
     "description":""
 }
 
 
 ###
-PUT http://localhost:5149/api/categories/9a3c7c2e-f29e-4ad9-83e2-c10910d50ea1
+PUT http://localhost:5149/api/categories/90f086fe-6d23-4abe-be27-5f6ef9c6bdd0
 Content-Type: application/json
 
 {
@@ -31,4 +31,4 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:5149/api/categories/9a3c7c2e-f29e-4ad9-83e2-c10910d50ea1
+DELETE http://localhost:5149/api/categories/90f086fe-6d23-4abe-be27-5f6ef9c6bdd0
