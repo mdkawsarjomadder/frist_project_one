@@ -4,10 +4,12 @@ GET http://localhost:5149
 
 ###
 GET http://localhost:5149/api/categories
+Content-Type: application/json
 # GET http://localhost:5149/api/categories?searchValue=Laptop
 
 ###
-GET http://localhost:5149/api/categories/79fe3a82-88b3-4f27-a600-882aec939a10
+GET http://localhost:5149/api/categories/fd127c3b-d30d-4fd1-b409-9ddf42e4eab9
+Content-Type: application/json
 
 
 ###
@@ -22,7 +24,7 @@ Content-Type: application/json
 
 
 ###
-PUT http://localhost:5149/api/categories/79fe3a82-88b3-4f27-a600-882aec939a10
+PUT http://localhost:5149/api/categories/fd127c3b-d30d-4fd1-b409-9ddf42e4eab9
 Content-Type: application/json
 
 {
@@ -31,4 +33,6 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:5149/api/4d58e3f8-50f5-4a5b-9b7a-47d1c659f07f
+DELETE http://localhost:5149/api/categories/fd127c3b-d30d-4fd1-b409-9ddf42e4eab9
+
+Content-Type: application/json

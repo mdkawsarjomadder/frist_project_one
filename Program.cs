@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAutoMapper(typeof(Program));  //AutoMeooer services...!
+
 // builder.Services.AddSingleton<CategoryServices>(); //category Service control.!
 builder.Services.AddScoped<InterfacecategoryService, CategoryServices>(); //interface register...!
 

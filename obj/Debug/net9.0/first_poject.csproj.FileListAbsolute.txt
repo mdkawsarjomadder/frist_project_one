@@ -108,3 +108,5 @@
 /home/md/Documents/fj/frist_project_one/obj/Debug/net9.0/first_poject.pdb
 /home/md/Documents/fj/frist_project_one/obj/Debug/net9.0/first_poject.genruntimeconfig.cache
 /home/md/Documents/fj/frist_project_one/obj/Debug/net9.0/ref/first_poject.dll
+/home/md/Documents/D_project/frist_project_one/bin/Debug/net9.0/AutoMapper.dll
+/home/md/Documents/D_project/frist_project_one/bin/Debug/net9.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
