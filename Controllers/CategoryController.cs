@@ -1,4 +1,5 @@
 using frist_project_one.DTOs;
+using frist_project_one.Interface;
 using frist_project_one.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,9 +9,9 @@ namespace frist_project_one.Controllers
     [Route("/api/categories/")]
     public class CategoryController : ControllerBase
     {
-        private CategoryServices _categoryService;
+        private InterfacecategoryService _categoryService;
 
-        public CategoryController( CategoryServices categoryServices)
+        public CategoryController( InterfacecategoryService categoryServices)
         {
             _categoryService = categoryServices;
         }
@@ -70,7 +71,7 @@ namespace frist_project_one.Controllers
         //Delete: /api/categories/{categoryId} => Delete  Category by Id..!
 
         [HttpDelete("{categoryId:guid}")]
-        public IActionResult DeleteCategory(Guid categoryId)
+        public IActionResult DeleteCategory(Guid categoryId )
         {
 
         var FoundCategory = _categoryService.DeleteCategoryById(categoryId);

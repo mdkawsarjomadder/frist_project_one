@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using frist_project_one.DTOs;
+using frist_project_one.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
 namespace frist_project_one.Services
 {
-    public class CategoryServices
+    public class CategoryServices:InterfacecategoryService
     {
         private static readonly List<Category> _categories = new List<Category>();
 

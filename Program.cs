@@ -1,10 +1,12 @@
 using frist_project_one.Controllers;
+using frist_project_one.Interface;
 using frist_project_one.Services;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<CategoryServices>(); //category Service control.!
+// builder.Services.AddSingleton<CategoryServices>(); //category Service control.!
+builder.Services.AddScoped<InterfacecategoryService, CategoryServices>(); //interface register...!
 
 // add sevices   to the controller.........>>! step_1
 
