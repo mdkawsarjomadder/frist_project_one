@@ -25,85 +25,62 @@ namespace frist_project_one.Controllers
         
            //GET: /api/categories/{categoryId} => read a category By Id.!
 
-    //     [HttpGet("{categoryId:guid}")]
-    //     public IActionResult GetCategoryById(Guid categoryID)
-    //     {
-    //         var FoundCategory = categories.FirstOrDefault(c => c.CategoryID == categoryID);
-    //         if (FoundCategory == null)
-    // {
-    //  return NotFound(ApiResponse<Object>.ErrorsResponse(new List<string> {"Category is not found With This ID."}, 400, "Validation Failde.!"));
+        [HttpGet("{categoryId:guid}")]
+        public IActionResult GetCategoryById(Guid categoryID)
+        {
+            var category = _categoryService.GetCategorySingleByID(categoryID);
+           
+            if (category == null)
+    {
+     return NotFound(ApiResponse<Object>.ErrorsResponse(new List<string> {"Category is not found With This ID."}, 400, "Validation Failde.!"));
 
-    //  }
-    //      var CategoryReadDTO = new CategoryReadDto
-    //         {
-    //             CategoryID = FoundCategory.CategoryID,
-    //             Name = FoundCategory.Name,
-    //             Description = FoundCategory.Description,
-    //             CategoryAt = FoundCategory.CategoryAt
-    //         };
-    //         return Ok(ApiResponse<CategoryReadDto>.SuccessResponse(CategoryReadDTO,200,"Categories returned is Successfully"));
-    //     }//Get End
+     }
+            return Ok(ApiResponse<CategoryReadDto>.SuccessResponse(category,200,"Categories returned is Successfully"));
+        }//Get End
 
         //POST: /api/categories/ => Create A category
 
-        // [HttpPost]
-        // public IActionResult PostCategory([FromBody] CategoryCreateDtos categoryData)
-        // {
+        [HttpPost]
+        public IActionResult PostCategory([FromBody] CategoryCreateDtos categoryData)
+        {
 
-        //     var newCategory = new Category
-        //     {
-        //         CategoryID = Guid.NewGuid(),
-        //         Name = categoryData.Name,
-        //         Description = categoryData.Description,
-        //         CategoryAt = DateTime.UtcNow,
+            var newCategory = _categoryService.CreateCategory(categoryData);
 
-        //     };
-        //     categories.Add(newCategory);
-        //     var CategoryReadDtoTwo = new CategoryReadDto
-        //     {
-        //         CategoryID = newCategory.CategoryID,
-        //         Name = newCategory.Name,
-        //         Description = newCategory.Description,
-        //         CategoryAt = newCategory.CategoryAt
-        //     };
-        //     return Created($"/api/categories/{newCategory.CategoryID}", 
-        //     ApiResponse<CategoryReadDto>.SuccessResponse(CategoryReadDtoTwo,201,"Category create a Successfully")
-        //     );
-        // }//post end
+            return Created($"/api/categories/{newCategory.CategoryID}",
+            ApiResponse<CategoryReadDto>.SuccessResponse(newCategory, 201, "Category create a Successfully")
+            );
+        }//post end
 
         //PUT: /api/categories/{categoryId} => Create Update..!
-        // [HttpPut("{categoryId:guid}")]
-        // public IActionResult PutCategory(Guid categoryId, [FromBody] CategoryUpdateDto categoryData)
-        // {
-        //     var FoundCategory = categories.FirstOrDefault(category => category.CategoryID == categoryId);
+        
+        [HttpPut("{categoryId:guid}")]
+        public IActionResult PutCategory(Guid categoryId, [FromBody] CategoryUpdateDto categoryData)
+        {
+            var UpdateCategory = _categoryService.UpdateCategoryById(categoryId, categoryData);
 
-        //     if (FoundCategory == null)
-        //     {
-        //         return NotFound(ApiResponse<Object>.ErrorsResponse(new List<string> {"Category is not found With This ID."}, 400, "Validation Failde.!"));
-        //     }
-        //         FoundCategory.Name = categoryData.Name;
-        //         FoundCategory.Description = categoryData.Description;
+            if (UpdateCategory == null)
+            {
+                return NotFound(ApiResponse<Object>.ErrorsResponse(new List<string> {"Category is not found With This ID."}, 400, "Validation Failde.!"));
+            }
 
-        //     return Ok(ApiResponse<object>.SuccessResponse(null,204,"Create a update successfully")); //204
+            return Ok(ApiResponse<CategoryReadDto>.SuccessResponse(UpdateCategory,200,"Create a update successfully")); //204
 
-        // }//Put End
+        }//Put End
         
         //Delete: /api/categories/{categoryId} => Delete  Category by Id..!
 
-    //     [HttpDelete("{categoryId:guid}")]
-    //     public IActionResult DeleteCategory(Guid categoryId)
-    //     {
-    //         var FoundCategory = categories.FirstOrDefault(category => category.CategoryID == categoryId);
+        [HttpDelete("{categoryId:guid}")]
+        public IActionResult DeleteCategory(Guid categoryId)
+        {
 
-    // if (FoundCategory == null)
-    // {
-    //  return NotFound(ApiResponse<Object>.ErrorsResponse(new List<string> {"Category is not found With This ID."}, 400, "Validation Failde.!"));
+        var FoundCategory = _categoryService.DeleteCategoryById(categoryId);
 
-    //  }
-  
-    //  categories.Remove(FoundCategory);
-    // return Ok(ApiResponse<object>.SuccessResponse(null, 204, "Category delete is a successfully.!")); //204
-    //     }//Get End
+        if (!FoundCategory)
+        {
+        return NotFound(ApiResponse<Object>.ErrorsResponse(new List<string> {"Category is not found With This ID."}, 404, "Validation Failde.!"));
+        }   
+        return Ok(ApiResponse<object>.SuccessResponse(null, 204, "Category delete is a successfully.!")); //204
+        }//Get End
 
         
         

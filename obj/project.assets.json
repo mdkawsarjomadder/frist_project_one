@@ -483,11 +483,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/md/Documents/fj/frist_project_one/first_poject.csproj",
+      "projectUniqueName": "/home/md/Documents/D_project/frist_project_one/first_poject.csproj",
       "projectName": "first_poject",
-      "projectPath": "/home/md/Documents/fj/frist_project_one/first_poject.csproj",
+      "projectPath": "/home/md/Documents/D_project/frist_project_one/first_poject.csproj",
       "packagesPath": "/home/md/.nuget/packages/",
-      "outputPath": "/home/md/Documents/fj/frist_project_one/obj/",
+      "outputPath": "/home/md/Documents/D_project/frist_project_one/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/md/.nuget/NuGet/NuGet.Config"
