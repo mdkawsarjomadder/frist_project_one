@@ -1,7 +1,10 @@
 using frist_project_one.Controllers;
+using frist_project_one.Data;
 using frist_project_one.Interface;
 using frist_project_one.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,9 +12,12 @@ builder.Services.AddAutoMapper(typeof(Program));  //AutoMeooer services...!
 
 // builder.Services.AddSingleton<CategoryServices>(); //category Service control.!
 builder.Services.AddScoped<InterfacecategoryService, CategoryServices>(); //interface register...!
-
 // add sevices   to the controller.........>>! step_1
 
+
+builder.Services.AddDbContext<AppDbContext>(Options =>
+ Options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+); //Database
 builder.Services.AddControllers();
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {

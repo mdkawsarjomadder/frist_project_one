@@ -3,39 +3,48 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using frist_project_one.Data;
 using frist_project_one.DTOs;
 using frist_project_one.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 
 namespace frist_project_one.Services
 {
     public class CategoryServices:InterfacecategoryService
     {
-        private static readonly List<Category> _categories = new List<Category>();
-
+        // private static readonly List<Category> _categories = new List<Category>();
+        private readonly AppDbContext _appDbContext; //Database ..!`
         private readonly IMapper _mapper;  //Mapper...!
 
-        public CategoryServices(IMapper mapper)
-        {
-            _mapper = mapper;
-        }
+        public CategoryServices(AppDbContext appDbContext, IMapper mapper)
+    {
+        _appDbContext = appDbContext;
+        _mapper = mapper;
+    }
 
-        public List<CategoryReadDto> GetAllCategories()  //Get Category All.
+
+        public async  Task<List<CategoryReadDto>> GetAllCategories()  //Get Category All.
         {
-            // return _categories.Select(c => new CategoryReadDto
-            // {
-            //     CategoryID = c.CategoryID,
-            //     Name = c.Name,
-            //     Description = c.Description,
-            //     CategoryAt = c.CategoryAt
-            // }).ToList();
-            return _mapper.Map<List<CategoryReadDto>>(_categories);
+            /*            
+                        // return _categories.Select(c => new CategoryReadDto
+                        // {
+                        //     CategoryID = c.CategoryID,
+                        //     Name = c.Name,
+                        //     Description = c.Description,
+                        //     CategoryAt = c.CategoryAt
+                        // }).ToList();
+            */
+            var categories = await _appDbContext.Categories.ToListAsync();
+            return _mapper.Map<List<CategoryReadDto>>(categories);
         }  //Get  End
 
-        public CategoryReadDto? GetCategorySingleByID(Guid categoryID)  //Get  Single Id In Category. 
+
+        public async Task<CategoryReadDto?> GetCategorySingleByID(Guid categoryID)  //Get  Single Id In Category. 
         {
-            var FoundCategory = _categories.FirstOrDefault(c => c.CategoryID == categoryID);
+
+            var FoundCategory = await _appDbContext.Categories.FindAsync(categoryID);
             return FoundCategory == null ? null : _mapper.Map<CategoryReadDto>(FoundCategory);
 /*
             // if (FoundCategory == null)
@@ -53,7 +62,7 @@ namespace frist_project_one.Services
 */            
         } //Get Single End
 
-        public CategoryReadDto CreateCategory(CategoryCreateDtos categoryData) //create a category POST..!
+        public async Task<CategoryReadDto> CreateCategory(CategoryCreateDtos categoryData) //create a category POST..!
         {
 /*            
             // var newCategory = new Category
@@ -69,7 +78,8 @@ namespace frist_project_one.Services
             newCategory.CategoryID = Guid.NewGuid();
             newCategory.Description = categoryData.Description;
 
-            _categories.Add(newCategory);
+            await _appDbContext.Categories.AddAsync(newCategory);
+            await _appDbContext.SaveChangesAsync();
 /*
             // return new CategoryReadDto
             // {
@@ -82,20 +92,23 @@ namespace frist_project_one.Services
             return _mapper.Map<CategoryReadDto>(newCategory);
         } // create a category post END.!
 
-        public CategoryReadDto? UpdateCategoryById(Guid categoryId, CategoryUpdateDto categoryData)  //Get  Single Id In Category. 
+        public async Task<CategoryReadDto?> UpdateCategoryById(Guid categoryId, CategoryUpdateDto categoryData)  //Get  Single Id In Category. 
         {
-            var FoundCategory = _categories.FirstOrDefault(category => category.CategoryID == categoryId);
+            var FoundCategory = await _appDbContext.Categories.FindAsync(categoryId);
 
             if (FoundCategory == null)
             {
                 return null;
             }
 
-/*
-            // FoundCategory.Name = categoryData.Name;
-            // FoundCategory.Description = categoryData.Description;
-*/
+            /*
+                        // FoundCategory.Name = categoryData.Name;
+                        // FoundCategory.Description = categoryData.Description;
+            */
             _mapper.Map(categoryData, FoundCategory);
+
+             _appDbContext.Categories.Update(FoundCategory); 
+           await _appDbContext.SaveChangesAsync();
 /*
             // return new CategoryReadDto
             // {
@@ -111,14 +124,15 @@ namespace frist_project_one.Services
 
         } //Get Single End
 
-        public bool DeleteCategoryById(Guid categoryId)  //Delete a Category. 
+        public async Task<bool> DeleteCategoryById(Guid categoryId)  //Delete a Category. 
         {
-            var FoundCategory = _categories.FirstOrDefault(category => category.CategoryID == categoryId);
+            var FoundCategory = await _appDbContext.Categories.FindAsync(categoryId);
             if (FoundCategory == null)
             {
                 return false;
             }
-            _categories.Remove(FoundCategory);
+            _appDbContext.Categories.Remove(FoundCategory);
+            await _appDbContext.SaveChangesAsync();
             return true;
 
         }//Delete a category..!

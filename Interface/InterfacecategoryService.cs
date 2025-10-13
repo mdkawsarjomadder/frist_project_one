@@ -7,7 +7,8 @@ using frist_project_one.DTOs;
 namespace frist_project_one.Interface
 {
     public interface InterfacecategoryService
-    {  List<CategoryReadDto> GetAllCategories(); // Get all categories
+    { 
+/*         List<CategoryReadDto> GetAllCategories(); // Get all categories
 
         CategoryReadDto? GetCategorySingleByID(Guid categoryID); // Get single category by ID
 
@@ -16,6 +17,18 @@ namespace frist_project_one.Interface
         CategoryReadDto? UpdateCategoryById(Guid categoryId, CategoryUpdateDto categoryData); // Update category by ID
 
         bool DeleteCategoryById(Guid categoryId); // Delete category by ID
+*/
+    
+    /*Asynchronous add */
+     
+        Task<List<CategoryReadDto>> GetAllCategories(); // Get all categories
 
+        Task<CategoryReadDto?> GetCategorySingleByID(Guid categoryID); // Get single category by ID
+
+        Task<CategoryReadDto> CreateCategory(CategoryCreateDtos categoryData); // ✅ Fixed spelling here
+
+        Task<CategoryReadDto?> UpdateCategoryById(Guid categoryId, CategoryUpdateDto categoryData); // Update category by ID
+
+        Task<bool> DeleteCategoryById(Guid categoryId); // Delete category by ID
     }
 }

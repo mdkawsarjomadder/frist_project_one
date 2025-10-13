@@ -18,18 +18,18 @@ namespace frist_project_one.Controllers
         //GET: /api/categories/ => read categories
 
         [HttpGet]
-        public IActionResult GetCategories([FromQuery] string searchValue = "")
+        public async Task<IActionResult> GetCategories([FromQuery] string searchValue = "")
         {
-            var CategoryReadList = _categoryService.GetAllCategories();
+            var CategoryReadList = await _categoryService.GetAllCategories();
             return Ok(ApiResponse<List<CategoryReadDto>>.SuccessResponse(CategoryReadList, 200, "Categories returned Successfully"));
         }//Get End
         
            //GET: /api/categories/{categoryId} => read a category By Id.!
 
         [HttpGet("{categoryId:guid}")]
-        public IActionResult GetCategoryById(Guid categoryID)
+        public async Task<IActionResult> GetCategoryById(Guid categoryID)
         {
-            var category = _categoryService.GetCategorySingleByID(categoryID);
+            var category =await _categoryService.GetCategorySingleByID(categoryID);
            
             if (category == null)
     {
@@ -42,22 +42,21 @@ namespace frist_project_one.Controllers
         //POST: /api/categories/ => Create A category
 
         [HttpPost]
-        public IActionResult PostCategory([FromBody] CategoryCreateDtos categoryData)
+        public async Task<IActionResult> PostCategory([FromBody] CategoryCreateDtos categoryData)
         {
 
-            var newCategory = _categoryService.CreateCategory(categoryData);
+            var newCategory = await _categoryService.CreateCategory(categoryData);
 
-            return Created($"/api/categories/{newCategory.CategoryID}",
-            ApiResponse<CategoryReadDto>.SuccessResponse(newCategory, 201, "Category create a Successfully")
+            return Created(nameof(GetCategoryById),ApiResponse<CategoryReadDto>.SuccessResponse(newCategory, 201, "Category create a Successfully")
             );
         }//post end
 
         //PUT: /api/categories/{categoryId} => Create Update..!
         
         [HttpPut("{categoryId:guid}")]
-        public IActionResult PutCategory(Guid categoryId, [FromBody] CategoryUpdateDto categoryData)
+        public async Task<IActionResult> PutCategory(Guid categoryId, [FromBody] CategoryUpdateDto categoryData)
         {
-            var UpdateCategory = _categoryService.UpdateCategoryById(categoryId, categoryData);
+            var UpdateCategory = await _categoryService.UpdateCategoryById(categoryId, categoryData);
 
             if (UpdateCategory == null)
             {
@@ -71,10 +70,10 @@ namespace frist_project_one.Controllers
         //Delete: /api/categories/{categoryId} => Delete  Category by Id..!
 
         [HttpDelete("{categoryId:guid}")]
-        public IActionResult DeleteCategory(Guid categoryId )
+        public async Task<IActionResult> DeleteCategory(Guid categoryId )
         {
 
-        var FoundCategory = _categoryService.DeleteCategoryById(categoryId);
+        var FoundCategory =await _categoryService.DeleteCategoryById(categoryId);
 
         if (!FoundCategory)
         {
