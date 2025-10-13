@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using frist_project_one.Controllers;
 using frist_project_one.DTOs;
 
 namespace frist_project_one.Interface
@@ -21,7 +22,7 @@ namespace frist_project_one.Interface
     
     /*Asynchronous add */
      
-        Task<List<CategoryReadDto>> GetAllCategories(); // Get all categories
+        Task<PaginationResult<CategoryReadDto>> GetAllCategories(int PageNumber, int PageSize); // Get all categories
 
         Task<CategoryReadDto?> GetCategorySingleByID(Guid categoryID); // Get single category by ID
 

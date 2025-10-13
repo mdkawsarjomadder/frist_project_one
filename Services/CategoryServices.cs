@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using frist_project_one.Controllers;
 using frist_project_one.Data;
 using frist_project_one.DTOs;
 using frist_project_one.Interface;
@@ -25,7 +26,7 @@ namespace frist_project_one.Services
     }
 
 
-        public async  Task<List<CategoryReadDto>> GetAllCategories()  //Get Category All.
+        public async Task<PaginationResult<CategoryReadDto>> GetAllCategories(int pageNumber, int  pageSize)  //Get Category All.
         {
             /*            
                         // return _categories.Select(c => new CategoryReadDto
@@ -36,8 +37,27 @@ namespace frist_project_one.Services
                         //     CategoryAt = c.CategoryAt
                         // }).ToList();
             */
-            var categories = await _appDbContext.Categories.ToListAsync();
-            return _mapper.Map<List<CategoryReadDto>>(categories);
+            IQueryable<Category> query = _appDbContext.Categories;
+            //Get Total Count..!
+            var totalCount = await query.CountAsync();
+
+            //pagination, pageNumber =1, pageSize = 5
+            //20 categories
+            //Skip((pageNumber-1) *pageSize).Take(pageSize)
+
+            var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+            // var categories = await _appDbContext.Categories.ToListAsync();
+
+            var results = _mapper.Map<List<CategoryReadDto>>(items);
+
+            return new PaginationResult<CategoryReadDto>
+            {
+                Items = results,
+                TotalCount = totalCount,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+            
         }  //Get  End
 
 
