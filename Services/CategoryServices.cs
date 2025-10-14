@@ -26,7 +26,8 @@ namespace frist_project_one.Services
     }
 
 
-        public async Task<PaginationResult<CategoryReadDto>> GetAllCategories(int pageNumber, int  pageSize)  //Get Category All.
+        public async Task<PaginationResult<CategoryReadDto>> GetAllCategories(
+            int pageNumber, int pageSize, string? search = null)  //Get Category All.
         {
             /*            
                         // return _categories.Select(c => new CategoryReadDto
@@ -38,6 +39,22 @@ namespace frist_project_one.Services
                         // }).ToList();
             */
             IQueryable<Category> query = _appDbContext.Categories;
+
+            //Search by name is Description............!
+            /*            if(!string.IsNullOrWhiteSpace(search.ToLower()))
+                       { 
+                          query = query.Where(c => c.Name.ToLower().Contains(search) || c.Description.ToLower().Contains(search));
+                       }
+           */
+
+            var FormatSerach = $"%{(search != null ? search.Trim() : "")}%";
+             if(!string.IsNullOrWhiteSpace(search))
+            { 
+               query = query.Where(c =>
+               EF.Functions.ILike(c.Name,FormatSerach) 
+               ||
+               EF.Functions.ILike(c.Description,FormatSerach));
+            }
             //Get Total Count..!
             var totalCount = await query.CountAsync();
 
