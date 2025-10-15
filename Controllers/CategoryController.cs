@@ -1,4 +1,5 @@
 using frist_project_one.DTOs;
+using frist_project_one.Helpers;
 using frist_project_one.Interface;
 using frist_project_one.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -18,19 +19,16 @@ namespace frist_project_one.Controllers
         //GET: /api/categories/ => read categories
 
         [HttpGet]
-        public async Task<IActionResult> GetCategories(
-        [FromQuery] int PageNumber = 1,
-        [FromQuery] int PageSize = 6,
-        [FromQuery] string? search = null,
-        [FromQuery] string? SortOrder = null
-        )    {
-        var CategoryReadList = await _categoryService.GetAllCategories(PageNumber, PageSize, search, SortOrder);
+        public async Task<IActionResult> GetCategories([FromQuery] QueryParamiters queryParamiters )
+        {
+            //the query of validation of paramiters...!
+            queryParamiters.Validate();
+            var CategoryReadList = await _categoryService.GetAllCategories(queryParamiters);
 
-        return Ok(ApiResponse<PaginationResult<CategoryReadDto>>.SuccessResponse(
-        CategoryReadList, 200, "Categories returned Successfully"));
-
-
+            return Ok(ApiResponse<PaginationResult<CategoryReadDto>>.SuccessResponse(
+            CategoryReadList, 200, "Categories returned Successfully"));
         }//Get End
+        
         
            //GET: /api/categories/{categoryId} => read a category By Id.!
 

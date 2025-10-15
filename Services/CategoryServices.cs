@@ -6,8 +6,9 @@
         using frist_project_one.Controllers;
         using frist_project_one.Data;
         using frist_project_one.DTOs;
-using frist_project_one.Enums;
-using frist_project_one.Interface;
+        using frist_project_one.Enums;
+        using frist_project_one.Helpers;
+        using frist_project_one.Interface;
         using Microsoft.AspNetCore.Mvc;
         using Microsoft.AspNetCore.SignalR;
         using Microsoft.EntityFrameworkCore;
@@ -27,18 +28,23 @@ using frist_project_one.Interface;
         }
 
 
-        public async Task<PaginationResult<CategoryReadDto>> GetAllCategories(
-        int pageNumber, int pageSize, string? search = null, string? SortOrder = null)  //Get Category All.
-        {
-        /*            
-        // return _categories.Select(c => new CategoryReadDto
-        // {
-        //     CategoryID = c.CategoryID,
-        //     Name = c.Name,
-        //     Description = c.Description,
-        //     CategoryAt = c.CategoryAt
-        // }).ToList();
-        */
+        public async Task<PaginationResult<CategoryReadDto>> GetAllCategories(QueryParamiters queryParamiters)  //Get Category All.
+                {
+                        /*            
+                        // return _categories.Select(c => new CategoryReadDto
+                        // {
+                        //     CategoryID = c.CategoryID,
+                        //     Name = c.Name,
+                        //     Description = c.Description,
+                        //     CategoryAt = c.CategoryAt
+                        // }).ToList();
+                        */
+                        //Decompose the queryParameters into local variables..!
+                        var pageNumber = queryParamiters.ppageNumber;
+                        var pageSize = queryParamiters.PpageSize;
+                        var search = queryParamiters.Ssearch;
+                        var sorting = queryParamiters.SsortOrder;
+        
         IQueryable<Category> query = _appDbContext.Categories;
 
         //Search by name is Description............!
@@ -60,13 +66,13 @@ using frist_project_one.Interface;
                         //Sorting strat!
 
 
-                                if (string.IsNullOrWhiteSpace(SortOrder))
+                                if (string.IsNullOrWhiteSpace(sorting))
                 {
                 query = query.OrderBy(c => c.Name);
                 }
                 else
                 {
-                var formatSorting = SortOrder.Trim().ToLower();
+                var formatSorting = sorting.Trim().ToLower();
 
                 if (Enum.TryParse<SortOrderName>(formatSorting, true, out var sortOrderParse))
                 {
@@ -143,9 +149,8 @@ using frist_project_one.Interface;
         Items = results,
         TotalCount = totalCount,
         PageNumber = pageNumber,
-        PageSize = pageSize
+        PageSize = pageSize       
         };
-
         }  //Get  End
 
 
@@ -172,20 +177,21 @@ using frist_project_one.Interface;
 
         public async Task<CategoryReadDto> CreateCategory(CategoryCreateDtos categoryData) //create a category POST..!
         {
-        /*            
-        // var newCategory = new Category
-        // {
-        //     CategoryID = Guid.NewGuid(),
-        //     Name = categoryData.Name,
-        //     Description = categoryData.Description,
-        //     CategoryAt = DateTime.UtcNow,
+                        /*            
+                        // var newCategory = new Category
+                        // {
+                        //     CategoryID = Guid.NewGuid(),
+                        //     Name = categoryData.Name,
+                        //     Description = categoryData.Description,
+                        //     CategoryAt = DateTime.UtcNow,
 
-        // };
-        */            
-        var newCategory = _mapper.Map<Category>(categoryData);
+                        // };
+                        */
+         var newCategory = _mapper.Map<Category>(categoryData);
+ /*      
         newCategory.CategoryID = Guid.NewGuid();
         newCategory.Description = categoryData.Description;
-
+*/
         await _appDbContext.Categories.AddAsync(newCategory);
         await _appDbContext.SaveChangesAsync();
         /*
