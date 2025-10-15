@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "oDe9sJCX98A=",
+  "dgSpecHash": "1vDpBiUBBOY=",
   "success": true,
-  "projectFilePath": "/home/md/Documents/D_project/frist_project_one/first_poject.csproj",
+  "projectFilePath": "/home/md/Documents/D_Net/frist_project_one/first_poject.csproj",
   "expectedPackageFiles": [
     "/home/md/.nuget/packages/automapper/12.0.1/automapper.12.0.1.nupkg.sha512",
     "/home/md/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.1/automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

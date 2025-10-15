@@ -12,8 +12,8 @@ using frist_project_one.Data;
 namespace first_poject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251013040138_initialCreate")]
-    partial class initialCreate
+    [Migration("20251015040548_SecondCreate")]
+    partial class SecondCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

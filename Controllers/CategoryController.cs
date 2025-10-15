@@ -18,13 +18,13 @@ namespace frist_project_one.Controllers
         //GET: /api/categories/ => read categories
 
         [HttpGet]
-        [HttpGet]
         public async Task<IActionResult> GetCategories(
         [FromQuery] int PageNumber = 1,
         [FromQuery] int PageSize = 6,
-        [FromQuery] string? search = null)
-        {
-        var CategoryReadList = await _categoryService.GetAllCategories(PageNumber, PageSize, search);
+        [FromQuery] string? search = null,
+        [FromQuery] string? SortOrder = null
+        )    {
+        var CategoryReadList = await _categoryService.GetAllCategories(PageNumber, PageSize, search, SortOrder);
 
         return Ok(ApiResponse<PaginationResult<CategoryReadDto>>.SuccessResponse(
         CategoryReadList, 200, "Categories returned Successfully"));

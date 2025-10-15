@@ -23,7 +23,7 @@ namespace frist_project_one.Interface
     /*Asynchronous add */
      
         Task<PaginationResult<CategoryReadDto>> GetAllCategories(
-            int PageNumber, int PageSize, string? search = null); // Get all categories
+            int PageNumber, int PageSize, string? search = null, string? SortOrder = null); // Get all categories
 
         Task<CategoryReadDto?> GetCategorySingleByID(Guid categoryID); // Get single category by ID
 
